@@ -9,9 +9,10 @@
 #define G_PWR_MGM 0x3E
 #define G_TO_READ 8 // 2 bytes for each axis x, y, z
 // offsets are chip specific. 
-int g_offx = 120;
-int g_offy = 20;
-int g_offz = 93;
+int g_offx = 30;
+int g_offy = 60;
+int g_offz = 30;
+
 int hx, hy, hz, turetemp;
 //initializes the gyroscope
 void initGyro()
