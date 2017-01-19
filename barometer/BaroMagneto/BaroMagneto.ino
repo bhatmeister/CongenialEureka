@@ -3,7 +3,6 @@
 
 // Put this line at the top of your program
 #define BMP085_ADDRESS 0x77  // I2C address of BMP085
-#define BMP085_ADDRESS 0x77  // I2C address of BMP085
 
 HMC5883L compass;
 const unsigned char OSS = 0;  // Oversampling Setting
