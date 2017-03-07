@@ -22,7 +22,6 @@ unsigned long delayTime;
 boolean obstacleFlag = false;
 boolean obstacleArray[SONAR_NUM];
 boolean obstacle;
-boolean sideUS;
 
 NewPing sonar[SONAR_NUM] = {     // Sensor object array.
   NewPing(11, 6, MAX_DISTANCE), // Each sensor's trigger pin, echo pin, and max distance to ping.
@@ -56,7 +55,7 @@ void setup() {
     pingTimer[i] = pingTimer[i - 1] + PING_INTERVAL;
 
   //Serial Communications
-  Serial.begin(9600);
+  //Serial.begin(9600);
   Wire.begin(SLAVE_ADDRESS);
   Wire.onRequest(sendData); 
   Wire.onReceive(receiveData);
@@ -79,13 +78,6 @@ void loop() {
   {
     if(obstacleFlag)
     {
-      if(sideUS){
-        delayTime = currentTime + 100;
-      }
-      else
-      {
-        delayTime = currentTime + 1000;
-      }
       if(millis() >= delayTime)
       {
         obstacleFlag = false;
@@ -97,19 +89,12 @@ void loop() {
       {
          obstacleFlag = true;
         //Stop the bot and move back a few steps
-        if(obstacleArray[1] == true){
-          turn(2,1);
-        }
 
-        if(obstacleArray[3] == true){
-          turn(1,1);
-        }
-
-        if(obstacleArray[0] == true){
+        if(obstacleArray[0] == true || obstacleArray[1] == true){
           turn(1,2);
         }
 
-        if(obstacleArray[4] == true){
+        if(obstacleArray[3] == true || obstacleArray[4] == true){
           turn(2,2);
         }
         
@@ -124,10 +109,8 @@ void loop() {
                       break;
             }
         }
-
         
-
-        currentTime = millis();
+        delayTime = millis() + 1000;
       }
 
       else
@@ -143,11 +126,9 @@ void loop() {
 void checkForObstacles(){
 
   obstacle = false;
-  sideUS = false; 
   for(int q = 0; q < SONAR_NUM; ++q )
   {
-    if(q == 0 || q == 2 || q == 4)
-    {
+    
       if(cm[q] > 2 && cm[q] < 10)
       {
         obstacleArray[q] = true;
@@ -157,20 +138,8 @@ void checkForObstacles(){
       {
         obstacleArray[q] = false;
       }
-    }
-    else
-    {
-      if(cm[q] > 2 && cm[q] < 5)
-      {
-        obstacleArray[q] = true;
-        obstacle = true;
-        sideUS = true;
-      }
-      else
-      {
-        obstacleArray[q] = false;
-      }
-    }
+   
+    
   }
   
 }
